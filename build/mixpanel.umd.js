@@ -3272,7 +3272,7 @@
             return;
         }
         // format data for POST array endpoint.
-        data['data'] = 'data=' + btoa('[' + atob(data['data']) + ']');
+        data['data'] = data['data'] ? 'data=' + btoa('[' + atob(data['data']) + ']') : undefined;
         // needed to correctly format responses
         var verbose_mode = this.get_config('verbose');
         if (data['verbose']) { verbose_mode = true; }

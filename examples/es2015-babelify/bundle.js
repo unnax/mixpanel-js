@@ -1786,7 +1786,7 @@ MixpanelLib.prototype._send_request = function (url, data, callback) {
         return;
     }
     // format data for POST array endpoint.
-    data['data'] = 'data=' + btoa('[' + atob(data['data']) + ']');
+    data['data'] = data['data'] ? 'data=' + btoa('[' + atob(data['data']) + ']') : undefined;
     // needed to correctly format responses
     var verbose_mode = this.get_config('verbose');
     if (data['verbose']) {
