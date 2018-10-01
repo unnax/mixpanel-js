@@ -3268,7 +3268,8 @@ MixpanelLib.prototype._send_request = function(url, data, callback) {
         this.__request_queue.push(arguments);
         return;
     }
-
+    // format data for POST array endpoint.
+    data['data'] = 'data=' + btoa('[' + atob(data['data']) + ']');
     // needed to correctly format responses
     var verbose_mode = this.get_config('verbose');
     if (data['verbose']) { verbose_mode = true; }
@@ -3290,7 +3291,7 @@ MixpanelLib.prototype._send_request = function(url, data, callback) {
 
     data['ip'] = this.get_config('ip')?1:0;
     data['_'] = new Date().getTime().toString();
-    url += '?' + _.HTTPBuildQuery(data);
+    // url += '?' + _.HTTPBuildQuery(data);
 
     if ('img' in data) {
         var img = document$1.createElement('img');
@@ -3299,12 +3300,13 @@ MixpanelLib.prototype._send_request = function(url, data, callback) {
     } else if (USE_XHR) {
         try {
             var req = new XMLHttpRequest();
-            req.open('GET', url, true);
+            req.open('POST', url, true);
 
             var headers = this.get_config('xhr_headers');
             _.each(headers, function(headerValue, headerName) {
                 req.setRequestHeader(headerName, headerValue);
             });
+            req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
             // send the mp_optout cookie
             // withCredentials cannot be modified until after calling .open on Android and Mobile Safari
@@ -3339,7 +3341,7 @@ MixpanelLib.prototype._send_request = function(url, data, callback) {
                     }
                 }
             };
-            req.send(null);
+            req.send(data['data']);
         } catch (e) {
             console$1.error(e);
         }
