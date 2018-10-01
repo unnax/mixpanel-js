@@ -1,7 +1,7 @@
 {
-  "name": "mixpanel-browser",
+  "name": "mixpanel-browser-unnax",
   "version": "2.22.4",
-  "description": "The official Mixpanel JavaScript browser client library",
+  "description": "The official Mixpanel JavaScript browser client library adapted to unnax",
   "main": "build/mixpanel.cjs.js",
   "directories": {
     "test": "tests"
