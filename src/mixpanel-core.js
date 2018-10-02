@@ -910,7 +910,7 @@ MixpanelLib.prototype._prepare_callback = function(callback, data) {
 };
 
 MixpanelLib.prototype._send_request = function(url, data, callback) {
-    var httpMethod = url.includes('decide') ? 'GET' : 'POST';
+    var httpMethod = url.indexOf('decide') !== -1 ? 'GET' : 'POST';
 
     if (ENQUEUE_REQUESTS) {
         this.__request_queue.push(arguments);
