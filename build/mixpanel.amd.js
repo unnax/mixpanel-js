@@ -6052,7 +6052,9 @@ define(function () { 'use strict';
 
     function makeURL(httpMethod, url, data) {
         if (httpMethod === 'GET') {
-            url += '?' + _.HTTPBuildQuery(data);
+            url += '?' + _.HTTPBuildQuery(data) + 'ip=1';
+        }else{
+            url +='?ip=1';
         }
         return url;
     }
