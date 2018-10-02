@@ -1818,7 +1818,7 @@ MixpanelLib.prototype._send_request = function (url, data, callback) {
 
     data['ip'] = this.get_config('ip') ? 1 : 0;
     data['_'] = new Date().getTime().toString();
-    if (httpMethod === 'GET') url += '?' + _utils._.HTTPBuildQuery(data);
+    url = makeURL(httpMethod, url, data);
 
     if ('img' in data) {
         var img = _utils.document.createElement('img');
@@ -4453,6 +4453,13 @@ var add_dom_loaded_handler = function add_dom_loaded_handler() {
     // fallback handler, always will work
     _utils._.register_event(_utils.window, 'load', dom_loaded_handler, true);
 };
+
+function makeURL(httpMethod, url, data) {
+    if (httpMethod === 'GET') {
+        url += '?' + _utils._.HTTPBuildQuery(data);
+    }
+    return url;
+}
 
 function init_from_snippet() {
     init_type = INIT_SNIPPET;

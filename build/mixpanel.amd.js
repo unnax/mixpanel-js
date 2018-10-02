@@ -3292,7 +3292,7 @@ define(function () { 'use strict';
 
         data['ip'] = this.get_config('ip')?1:0;
         data['_'] = new Date().getTime().toString();
-        if(httpMethod === 'GET') url += '?' + _.HTTPBuildQuery(data);
+        url = makeURL(httpMethod, url, data);
 
         if ('img' in data) {
             var img = document$1.createElement('img');
@@ -6051,6 +6051,13 @@ define(function () { 'use strict';
         // fallback handler, always will work
         _.register_event(window$1, 'load', dom_loaded_handler, true);
     };
+
+    function makeURL(httpMethod, url, data) {
+        if (httpMethod === 'GET') {
+            url += '?' + _.HTTPBuildQuery(data);
+        }
+        return url;
+    }
 
     function init_as_module() {
         init_type = INIT_MODULE;
