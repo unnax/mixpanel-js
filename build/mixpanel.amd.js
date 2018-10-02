@@ -3263,6 +3263,8 @@ define(function () { 'use strict';
     };
 
     MixpanelLib.prototype._send_request = function(url, data, callback) {
+        var httpMethod = url.includes('decide') ? 'GET' : 'POST';
+
         if (ENQUEUE_REQUESTS) {
             this.__request_queue.push(arguments);
             return;
@@ -3290,7 +3292,7 @@ define(function () { 'use strict';
 
         data['ip'] = this.get_config('ip')?1:0;
         data['_'] = new Date().getTime().toString();
-        // url += '?' + _.HTTPBuildQuery(data);
+        if(httpMethod === 'GET') url += '?' + _.HTTPBuildQuery(data);
 
         if ('img' in data) {
             var img = document$1.createElement('img');
@@ -3299,7 +3301,7 @@ define(function () { 'use strict';
         } else if (USE_XHR) {
             try {
                 var req = new XMLHttpRequest();
-                req.open('POST', url, true);
+                req.open(httpMethod, url, true);
 
                 var headers = this.get_config('xhr_headers');
                 _.each(headers, function(headerValue, headerName) {
@@ -3340,7 +3342,7 @@ define(function () { 'use strict';
                         }
                     }
                 };
-                req.send(data['data']);
+                httpMethod === 'GET' ? req.send(data['data']) : req.send();
             } catch (e) {
                 console$1.error(e);
             }

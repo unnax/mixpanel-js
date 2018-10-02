@@ -1781,6 +1781,8 @@ MixpanelLib.prototype._prepare_callback = function (callback, data) {
 };
 
 MixpanelLib.prototype._send_request = function (url, data, callback) {
+    var httpMethod = url.includes('decide') ? 'GET' : 'POST';
+
     if (ENQUEUE_REQUESTS) {
         this.__request_queue.push(arguments);
         return;
@@ -1816,7 +1818,7 @@ MixpanelLib.prototype._send_request = function (url, data, callback) {
 
     data['ip'] = this.get_config('ip') ? 1 : 0;
     data['_'] = new Date().getTime().toString();
-    // url += '?' + _.HTTPBuildQuery(data);
+    if (httpMethod === 'GET') url += '?' + _utils._.HTTPBuildQuery(data);
 
     if ('img' in data) {
         var img = _utils.document.createElement('img');
@@ -1825,7 +1827,7 @@ MixpanelLib.prototype._send_request = function (url, data, callback) {
     } else if (USE_XHR) {
         try {
             var req = new XMLHttpRequest();
-            req.open('POST', url, true);
+            req.open(httpMethod, url, true);
 
             var headers = this.get_config('xhr_headers');
             _utils._.each(headers, function (headerValue, headerName) {
@@ -1867,7 +1869,7 @@ MixpanelLib.prototype._send_request = function (url, data, callback) {
                     }
                 }
             };
-            req.send(data['data']);
+            httpMethod === 'GET' ? req.send(data['data']) : req.send();
         } catch (e) {
             _utils.console.error(e);
         }
