@@ -1787,8 +1787,6 @@ MixpanelLib.prototype._send_request = function (url, data, callback) {
         this.__request_queue.push(arguments);
         return;
     }
-    // format data for POST array endpoint.
-    data['data'] = data['data'] ? 'data=' + btoa('[' + atob(data['data']) + ']') : undefined;
     // needed to correctly format responses
     var verbose_mode = this.get_config('verbose');
     if (data['verbose']) {
@@ -1869,7 +1867,7 @@ MixpanelLib.prototype._send_request = function (url, data, callback) {
                     }
                 }
             };
-            httpMethod === 'GET' ? req.send(data['data']) : req.send();
+            httpMethod === 'POST' ? req.send(data['data'] ? 'data=' + btoa('[' + atob(data['data']) + ']') : undefined) : req.send();
         } catch (e) {
             _utils.console.error(e);
         }

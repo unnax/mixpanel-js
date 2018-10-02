@@ -3269,8 +3269,6 @@ define(function () { 'use strict';
             this.__request_queue.push(arguments);
             return;
         }
-        // format data for POST array endpoint.
-        data['data'] = data['data'] ? 'data=' + btoa('[' + atob(data['data']) + ']') : undefined;
         // needed to correctly format responses
         var verbose_mode = this.get_config('verbose');
         if (data['verbose']) { verbose_mode = true; }
@@ -3342,7 +3340,7 @@ define(function () { 'use strict';
                         }
                     }
                 };
-                httpMethod === 'GET' ? req.send(data['data']) : req.send();
+                httpMethod === 'POST' ? req.send(data['data'] ? 'data=' + btoa('[' + atob(data['data']) + ']') : undefined) : req.send();
             } catch (e) {
                 console$1.error(e);
             }
